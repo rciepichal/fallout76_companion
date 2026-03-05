@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F76 Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>F76 Tracker</h1>
+      <div class="reset-timers">
+        <span>Daily: <span id="daily-timer">--:--:--</span></span>
+        <span>Weekly: <span id="weekly-timer">--:--:--</span></span>
+      </div>
+    </header>
+
+    <main id="tracker"></main>
+
+    <div class="modal-overlay" id="edit-modal">
+      <div class="modal">
+        <h2>Edit Item</h2>
+        <input type="text" id="edit-name" placeholder="Item name">
+        <div class="modal-buttons">
+          <button class="cancel" id="edit-cancel">Cancel</button>
+          <button id="edit-save">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
