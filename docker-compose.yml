@@ -1,0 +1,11 @@
+services:
+  f76:
+    build: .
+    ports:
+      - "3076:3076"
+    volumes:
+      - f76-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  f76-data:
