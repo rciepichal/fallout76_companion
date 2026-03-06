@@ -43,7 +43,7 @@ body::after {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -268,4 +268,179 @@ header h1 {
 .modal-buttons button.cancel {
   border-color: var(--green-dim);
   color: var(--green-dim);
+}
+
+/* Two-column layout */
+.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 700px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Buff panel */
+.buff-panel {
+  border-right: 1px solid var(--border);
+  padding-right: 24px;
+}
+
+@media (max-width: 700px) {
+  .buff-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+    padding-bottom: 24px;
+  }
+}
+
+.buff-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.buff-item:hover {
+  background: var(--dark-lighter);
+}
+
+.buff-item.active {
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.buff-item.active .buff-timer {
+  color: var(--green);
+}
+
+@keyframes buff-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.buff-item.active .buff-indicator {
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+  animation: buff-pulse 2s ease-in-out infinite;
+}
+
+.buff-indicator {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.buff-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.buff-name {
+  font-size: 0.85rem;
+}
+
+.buff-timer {
+  font-size: 0.7rem;
+  color: var(--green-dim);
+}
+
+.buff-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.buff-item:hover .buff-actions {
+  opacity: 1;
+}
+
+.buff-actions button {
+  background: none;
+  border: 1px solid var(--green-dim);
+  color: var(--green-dim);
+  font-family: inherit;
+  font-size: 0.65rem;
+  padding: 1px 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.buff-actions button:hover {
+  color: var(--green);
+  border-color: var(--green);
+}
+
+.buff-panel .add-item {
+  flex-wrap: wrap;
+}
+
+.buff-panel .add-item input[type="number"] {
+  width: 60px;
+  background: var(--dark);
+  border: 1px solid var(--border);
+  color: var(--green);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 8px;
+  outline: none;
+}
+
+.buff-panel .add-item input[type="number"]:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 5px var(--green-glow);
+}
+
+/* Buff expired flash */
+@keyframes buff-expired-flash {
+  0%, 100% { background: transparent; }
+  25% { background: rgba(255, 60, 60, 0.25); }
+  50% { background: transparent; }
+  75% { background: rgba(255, 60, 60, 0.15); }
+}
+
+.buff-item.expired-flash {
+  animation: buff-expired-flash 1s ease-out;
+}
+
+.buff-item.expired-flash .buff-timer {
+  color: #ff3c3c;
+}
+
+/* Toast notifications */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 998;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  background: var(--dark);
+  border: 1px solid #ff3c3c;
+  color: #ff3c3c;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  padding: 10px 16px;
+  box-shadow: 0 0 12px rgba(255, 60, 60, 0.3);
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toast.fade-out {
+  opacity: 0;
 }

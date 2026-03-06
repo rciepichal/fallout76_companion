@@ -30,6 +30,24 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_completions_completed_at ON completions(completed_at);
 `);
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS buffs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    duration_minutes INTEGER NOT NULL,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    is_active INTEGER NOT NULL DEFAULT 1
+  );
+
+  CREATE TABLE IF NOT EXISTS buff_activations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    buff_id INTEGER NOT NULL REFERENCES buffs(id),
+    activated_at TEXT NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_buff_activations_buff_id ON buff_activations(buff_id);
+`);
+
 // Seed default items if table is empty
 const count = db.prepare('SELECT COUNT(*) as c FROM items').get();
 if (count.c === 0) {
@@ -60,6 +78,21 @@ if (count.c === 0) {
     ['Lucky Mucker (Camden Park)', 'daily', 'daily', 28],
     // Weekly
     ['Weekly Challenges', 'weekly', 'weekly', 50],
+  ]);
+}
+
+const buffCount = db.prepare('SELECT COUNT(*) as c FROM buffs').get();
+if (buffCount.c === 0) {
+  const insertBuff = db.prepare(
+    'INSERT INTO buffs (name, duration_minutes, sort_order) VALUES (?, ?, ?)'
+  );
+  const seedBuffs = db.transaction((buffs) => {
+    for (const buff of buffs) insertBuff.run(...buff);
+  });
+  seedBuffs([
+    ['Food', 60, 1],
+    ['Company Tea', 30, 2],
+    ['Well Rested', 120, 3],
   ]);
 }
 

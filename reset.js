@@ -1,48 +1,47 @@
 function getResetBoundaries() {
   const now = new Date();
 
-  const etFormat = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/New_York',
+  const wzFormat = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Warsaw',
     year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', second: '2-digit',
     hour12: false,
   });
   const parts = Object.fromEntries(
-    etFormat.formatToParts(now).map(p => [p.type, p.value])
+    wzFormat.formatToParts(now).map(p => [p.type, p.value])
   );
-  const etNow = new Date(
+  const wzNow = new Date(
     `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`
   );
-  const etHour = etNow.getHours();
-  const etDay = etNow.getDay();
+  const wzHour = wzNow.getHours();
 
-  const dailyResetET = new Date(etNow);
-  dailyResetET.setHours(12, 0, 0, 0);
-  if (etHour < 12) {
-    dailyResetET.setDate(dailyResetET.getDate() - 1);
+  const dailyResetWZ = new Date(wzNow);
+  dailyResetWZ.setHours(18, 0, 0, 0);
+  if (wzHour < 18) {
+    dailyResetWZ.setDate(dailyResetWZ.getDate() - 1);
   }
 
-  const weeklyResetET = new Date(dailyResetET);
-  const etDayOfWeek = weeklyResetET.getDay();
-  let daysBack = (etDayOfWeek - 2 + 7) % 7;
-  if (daysBack === 0 && etHour < 12) daysBack = 7;
-  weeklyResetET.setDate(weeklyResetET.getDate() - daysBack);
-  weeklyResetET.setHours(12, 0, 0, 0);
+  const weeklyResetWZ = new Date(dailyResetWZ);
+  const wzDayOfWeek = weeklyResetWZ.getDay();
+  let daysBack = (wzDayOfWeek - 2 + 7) % 7;
+  if (daysBack === 0 && wzHour < 18) daysBack = 7;
+  weeklyResetWZ.setDate(weeklyResetWZ.getDate() - daysBack);
+  weeklyResetWZ.setHours(18, 0, 0, 0);
 
   const utcNow = now.getTime();
-  const etOffset = utcNow - etNow.getTime();
+  const wzOffset = utcNow - wzNow.getTime();
 
-  const dailyReset = new Date(dailyResetET.getTime() + etOffset).toISOString();
-  const weeklyReset = new Date(weeklyResetET.getTime() + etOffset).toISOString();
+  const dailyReset = new Date(dailyResetWZ.getTime() + wzOffset).toISOString();
+  const weeklyReset = new Date(weeklyResetWZ.getTime() + wzOffset).toISOString();
 
-  const nextDailyET = new Date(dailyResetET);
-  nextDailyET.setDate(nextDailyET.getDate() + 1);
+  const nextDailyWZ = new Date(dailyResetWZ);
+  nextDailyWZ.setDate(nextDailyWZ.getDate() + 1);
 
-  const nextWeeklyET = new Date(weeklyResetET);
-  nextWeeklyET.setDate(nextWeeklyET.getDate() + 7);
+  const nextWeeklyWZ = new Date(weeklyResetWZ);
+  nextWeeklyWZ.setDate(nextWeeklyWZ.getDate() + 7);
 
-  const nextDaily = new Date(nextDailyET.getTime() + etOffset).toISOString();
-  const nextWeekly = new Date(nextWeeklyET.getTime() + etOffset).toISOString();
+  const nextDaily = new Date(nextDailyWZ.getTime() + wzOffset).toISOString();
+  const nextWeekly = new Date(nextWeeklyWZ.getTime() + wzOffset).toISOString();
 
   return { dailyReset, weeklyReset, nextDaily, nextWeekly };
 }

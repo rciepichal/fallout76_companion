@@ -16,7 +16,18 @@
       </div>
     </header>
 
-    <main id="tracker"></main>
+    <div class="layout">
+      <aside class="buff-panel" id="buff-panel">
+        <div class="category-header">Active Effects</div>
+        <div id="buff-list"></div>
+        <div class="add-item">
+          <input type="text" id="new-buff-name" placeholder="Buff name...">
+          <input type="number" id="new-buff-duration" placeholder="Min" min="1" style="width: 60px;">
+          <button id="add-buff-btn">Add</button>
+        </div>
+      </aside>
+      <main id="tracker"></main>
+    </div>
 
     <div class="modal-overlay" id="edit-modal">
       <div class="modal">
@@ -28,6 +39,19 @@
         </div>
       </div>
     </div>
+
+    <div class="modal-overlay" id="buff-edit-modal">
+      <div class="modal">
+        <h2>Edit Buff</h2>
+        <input type="text" id="buff-edit-name" placeholder="Buff name">
+        <input type="number" id="buff-edit-duration" placeholder="Duration (minutes)" min="1">
+        <div class="modal-buttons">
+          <button class="cancel" id="buff-edit-cancel">Cancel</button>
+          <button id="buff-edit-save">Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container" id="toast-container"></div>
   </div>
   <script src="app.js"></script>
 </body>
